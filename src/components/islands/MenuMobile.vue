@@ -74,11 +74,12 @@ watch(ouvert, (estOuvert) => {
 });
 
 // Passage en affichage bureau (≥ 48rem) : la nav-bureau reprend la main, on ferme le panneau mobile
-const mediaBureau = window.matchMedia('(min-width: 48rem)');
+let mediaBureau: MediaQueryList | null = null;
 function surChangementMedia(e: MediaQueryListEvent) {
   if (e.matches) fermer(false);
 }
 onMounted(() => {
+  mediaBureau = window.matchMedia('(min-width: 48rem)');
   mediaBureau.addEventListener('change', surChangementMedia);
 });
 
@@ -87,7 +88,7 @@ onBeforeUnmount(() => {
   document.documentElement.style.overflow = '';
   isolerFond(false);
   document.removeEventListener('keydown', surTouche);
-  mediaBureau.removeEventListener('change', surChangementMedia);
+  mediaBureau?.removeEventListener('change', surChangementMedia);
 });
 </script>
 
