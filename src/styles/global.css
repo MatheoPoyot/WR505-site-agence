@@ -1,0 +1,17 @@
+/* Styles globaux : reset minimal. Les tokens (couleurs, typo, espacements) viendront avec la direction visuelle. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
