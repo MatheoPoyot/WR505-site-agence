@@ -91,10 +91,22 @@ function surSortie() {
   planifier();
 }
 
+// Sans cet attribut, .hero reste en hauteur auto : pas de section de deux écrans à faire défiler sans JS
+function definirHeroActif(actif: boolean) {
+  const section = racine.value?.closest<HTMLElement>('[data-hero]');
+  if (!section) return;
+  if (actif) {
+    section.setAttribute('data-hero-actif', '');
+  } else {
+    section.removeAttribute('data-hero-actif');
+  }
+}
+
 onMounted(() => {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const el = racine.value;
   if (!el) return;
+  definirHeroActif(true);
   el.addEventListener('pointermove', surPointeur);
   el.addEventListener('pointerdown', surPointeur);
   el.addEventListener('pointerleave', surSortie);
@@ -105,6 +117,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   cancelAnimationFrame(cadre);
+  definirHeroActif(false);
   const el = racine.value;
   el?.removeEventListener('pointermove', surPointeur);
   el?.removeEventListener('pointerdown', surPointeur);
