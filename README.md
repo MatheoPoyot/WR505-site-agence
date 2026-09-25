@@ -32,6 +32,8 @@ docs/           décisions techniques
 
 Netlify : build et dossier publié dans `netlify.toml`, version de Node dans `.nvmrc`. La branche de production (`main`) et les aperçus de branches se règlent dans l'interface Netlify ; les pull requests ont un aperçu par défaut.
 
+Le formulaire de contact utilise Netlify Forms : après le premier déploiement, activer *Forms › Enable form detection* dans l'interface Netlify, puis redéployer pour que le formulaire statique soit détecté. Les envois se consultent ensuite dans l'onglet *Forms* du site Netlify.
+
 ## Workflow
 
 Gitflow (`main`, `develop`, `feature/*`, `release/*`, `hotfix/*`) et Conventional Commits. Voir `CLAUDE.md` et `docs/DECISIONS.md`.
