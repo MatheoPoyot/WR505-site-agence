@@ -18,7 +18,7 @@ export default defineConfig({
       cssVariable: '--font-display',
       weights: [800],
       styles: ['normal'],
-      subsets: ['latin'],
+      subsets: ['latin', 'latin-ext'],
       fallbacks: ['system-ui', 'sans-serif'],
     },
     {
@@ -27,7 +27,7 @@ export default defineConfig({
       cssVariable: '--font-body',
       weights: [400, 500],
       styles: ['normal'],
-      subsets: ['latin'],
+      subsets: ['latin', 'latin-ext'],
       fallbacks: ['system-ui', 'sans-serif'],
     },
   ],

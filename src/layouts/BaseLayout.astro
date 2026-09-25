@@ -21,13 +21,8 @@ const canonique = new URL(Astro.url.pathname, Astro.site);
 // Sans JavaScript, le bouton du menu mobile est inerte : on affiche plutôt la nav bureau.
 // Rendu via set:html pour échapper à la portée (data-astro-cid-*) des styles de Header.astro ;
 // !important compense la spécificité ajoutée par cet attribut de portée.
-const styleSansJS = `<style>
-  @media (max-width: 47.99rem) {
-    .nav-bureau { display: block !important; }
-    .nav-bureau ul { flex-wrap: wrap !important; gap: var(--space-xs) !important; }
-    .menu-mobile { display: none !important; }
-  }
-</style>`;
+const styleSansJS =
+  '<style>@media (max-width: 47.99rem) { .nav-bureau { display: block !important; } .nav-bureau ul { flex-wrap: wrap !important; gap: var(--space-xs) !important; } .menu-mobile { display: none !important; } }</style>';
 ---
 
 <!doctype html>
@@ -50,8 +45,9 @@ const styleSansJS = `<style>
     <link rel="icon" href="/favicon.ico" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="generator" content={Astro.generator} />
-    <Font cssVariable="--font-display" preload />
-    <Font cssVariable="--font-body" preload />
+    {/* latin-ext couvre les caractères comme le « ō » de Kōri ; seul le sous-ensemble latin est préchargé */}
+    <Font cssVariable="--font-display" preload={[{ subset: 'latin' }]} />
+    <Font cssVariable="--font-body" preload={[{ subset: 'latin' }]} />
     <noscript set:html={styleSansJS} />
     <ClientRouter />
   </head>
