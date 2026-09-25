@@ -49,16 +49,18 @@ const Titre = niveau;
     position: absolute;
     top: 0;
     right: 0;
-    width: 0;
+    width: 22%;
     aspect-ratio: 1;
     background: linear-gradient(225deg, var(--color-bg) 50%, var(--pli-couleur) 50%);
     box-shadow: -6px 6px 14px rgb(0 0 0 / 0.35);
-    transition: width var(--duree) var(--ease-pli);
+    transform: scale(0);
+    transform-origin: top right;
+    transition: transform var(--duree) var(--ease-pli);
   }
 
   .carte-projet__lien:hover .carte-projet__visuel::after,
   .carte-projet__lien:focus-visible .carte-projet__visuel::after {
-    width: 22%;
+    transform: scale(1);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -72,7 +74,8 @@ const Titre = niveau;
     line-height: 1.05;
   }
 
-  .carte-projet__lien:hover .carte-projet__titre {
+  .carte-projet__lien:hover .carte-projet__titre,
+  .carte-projet__lien:focus-visible .carte-projet__titre {
     color: var(--color-pink);
   }
 
