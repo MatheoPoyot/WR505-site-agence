@@ -1,0 +1,46 @@
+---
+import { FORMATS, genererPli, versPoints, type NomFormat } from './pli';
+
+interface Props {
+  seed: number;
+  palette: string[];
+  format: NomFormat;
+  class?: string;
+}
+
+const { seed, palette, format, class: classe } = Astro.props;
+const f = FORMATS[format];
+const { facettes, plis } = genererPli(seed, palette, f);
+---
+
+<svg
+  class:list={['pli', classe]}
+  viewBox={`0 0 ${f.largeur} ${f.hauteur}`}
+  preserveAspectRatio="xMidYMid slice"
+  aria-hidden="true"
+  focusable="false"
+>
+  {
+    facettes.map((t) => (
+      <polygon points={versPoints(t.points)} fill={t.couleur} stroke={t.couleur} stroke-width="0.6" />
+    ))
+  }
+  {
+    plis.map(([a, b]) => (
+      <line x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} class="pli__arete" />
+    ))
+  }
+</svg>
+
+<style>
+  .pli {
+    width: 100%;
+    height: 100%;
+  }
+
+  .pli__arete {
+    stroke: rgb(255 255 255 / 0.35);
+    stroke-width: 1.2;
+    vector-effect: non-scaling-stroke;
+  }
+</style>
