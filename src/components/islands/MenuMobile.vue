@@ -13,10 +13,13 @@ const bouton = ref<HTMLButtonElement | null>(null);
 const panneau = ref<HTMLElement | null>(null);
 
 const sansBarre = (p: string) => p.replace(/\/+$/, '') || '/';
-const estActif = (href: string) => {
+// 'page' sur la page exacte, 'true' sur une page enfant (ex. /projets/kori/ pour le lien /projets/)
+const etatActif = (href: string): 'page' | 'true' | undefined => {
   const c = sansBarre(props.chemin);
   const h = sansBarre(href);
-  return c === h || c.startsWith(h + '/');
+  if (c === h) return 'page';
+  if (c.startsWith(h + '/')) return 'true';
+  return undefined;
 };
 
 function focusables(): HTMLElement[] {
@@ -108,7 +111,7 @@ onBeforeUnmount(() => {
       <nav aria-label="Navigation principale">
         <ul>
           <li v-for="lien in liens" :key="lien.href">
-            <a :href="lien.href" :aria-current="estActif(lien.href) ? 'page' : undefined" @click="fermer(false)">
+            <a :href="lien.href" :aria-current="etatActif(lien.href)" @click="fermer(false)">
               {{ lien.label }}
             </a>
           </li>
@@ -168,7 +171,8 @@ onBeforeUnmount(() => {
   text-decoration: none;
 }
 
-.menu-mobile__panneau a[aria-current='page'] {
+.menu-mobile__panneau a[aria-current='page'],
+.menu-mobile__panneau a[aria-current='true'] {
   color: var(--color-pink);
 }
 </style>

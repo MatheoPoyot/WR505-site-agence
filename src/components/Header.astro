@@ -8,10 +8,13 @@ const liens = [
 ];
 const chemin = Astro.url.pathname;
 const sansBarre = (p: string) => p.replace(/\/+$/, '') || '/';
-const estActif = (href: string) => {
+// 'page' sur la page exacte, 'true' sur une page enfant (ex. /projets/kori/ pour le lien /projets/)
+const etatActif = (href: string): 'page' | 'true' | undefined => {
   const c = sansBarre(chemin);
   const h = sansBarre(href);
-  return c === h || c.startsWith(h + '/');
+  if (c === h) return 'page';
+  if (c.startsWith(h + '/')) return 'true';
+  return undefined;
 };
 ---
 
@@ -30,7 +33,7 @@ const estActif = (href: string) => {
         {
           liens.map((lien) => (
             <li>
-              <a href={lien.href} aria-current={estActif(lien.href) ? 'page' : undefined}>
+              <a href={lien.href} aria-current={etatActif(lien.href)}>
                 {lien.label}
               </a>
             </li>
@@ -99,11 +102,13 @@ const estActif = (href: string) => {
   }
 
   .nav-bureau a:hover,
-  .nav-bureau a[aria-current='page'] {
+  .nav-bureau a[aria-current='page'],
+  .nav-bureau a[aria-current='true'] {
     color: var(--color-text);
   }
 
-  .nav-bureau a[aria-current='page'] {
+  .nav-bureau a[aria-current='page'],
+  .nav-bureau a[aria-current='true'] {
     text-decoration: underline;
     text-decoration-color: var(--color-pink);
     text-decoration-thickness: 2px;
