@@ -49,3 +49,9 @@ Format : date, décision, alternatives écartées, raison.
 - **Décision** : l'îlot `FiltreProjets.vue` masque/affiche les cartes rendues par Astro (attribut `data-disciplines`) au lieu de rendre lui-même la grille ; il est hydraté en `client:idle` et n'affiche ses boutons qu'une fois monté.
 - **Alternatives écartées** : rendre toute la grille en Vue (impossible de réutiliser les SVG générés au build par `Pli.astro`) ; `client:visible` (un îlot vide avant montage n'a pas de surface à observer).
 - **Raison** : visuels 100 % statiques, et page complète sans JavaScript.
+
+## 2026-09-25 — Feuille hero en calques CSS 3D
+
+- **Décision** : `FeuilleHero.vue` rend chaque facette comme un calque découpé par `clip-path` et animé par `rotate3d`, à partir de la même géométrie que `Pli.astro` (`pli.ts`). Le repli en grue suit le scroll (section de deux écrans, scène collante). Le rendu serveur de l'îlot sert d'état statique (avant hydratation et sous mouvement réduit), au lieu d'un SVG `Pli.astro` séparé.
+- **Alternatives écartées** : facettes en SVG (pas de vraie rotation 3D) ; WebGL.
+- **Raison** : effet 3D réel sans dépendance, un seul rendu à maintenir.
