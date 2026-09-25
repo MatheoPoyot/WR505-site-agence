@@ -54,8 +54,9 @@ const options = (Object.keys(LIBELLES_DISCIPLINES) as Discipline[])
       grid-template-columns: repeat(2, 1fr);
     }
 
-    /* Grille asymétrique : la colonne de droite est décalée vers le bas */
-    .grille-projets > li:nth-child(even) {
+    /* Grille asymétrique : la colonne de droite est décalée vers le bas ;
+       :not([hidden]) pour que le décalage reste juste quand le filtre masque des cartes */
+    .grille-projets > li:nth-child(even of :not([hidden])) {
       margin-top: var(--space-xl);
     }
   }
