@@ -135,7 +135,6 @@ onBeforeUnmount(() => {
   transition:
     transform 0.35s var(--ease-pli),
     filter 0.35s var(--ease-pli);
-  will-change: transform, clip-path;
 }
 
 @media (prefers-reduced-motion: reduce) {
