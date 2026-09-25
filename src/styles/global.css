@@ -1,17 +1,163 @@
-/* Styles globaux : reset minimal. Les tokens (couleurs, typo, espacements) viendront avec la direction visuelle. */
+@import './tokens.css';
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
-  line-height: 1.5;
+html {
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
 }
 
-img {
-  max-width: 100%;
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  overflow-x: clip;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+  /* Unbounded est très large : on autorise la césure pour tenir sur 320 px */
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+img,
+svg {
   display: block;
+  max-width: 100%;
+}
+
+a {
+  color: var(--color-link);
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  color: var(--color-text);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-lime);
+  outline-offset: 3px;
+}
+
+.conteneur {
+  width: min(100% - 2 * var(--gutter), var(--max-width));
+  margin-inline: auto;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.exergue {
+  color: var(--color-pink);
+}
+
+.chapo {
+  max-width: var(--measure);
+  color: var(--color-text-muted);
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+}
+
+.bouton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.9em 1.5em;
+  border-radius: 999px;
+  background: var(--color-lime);
+  color: var(--color-bg);
+  font-weight: 500;
+  text-decoration: none;
+  transition: transform var(--duree) var(--ease-pli);
+}
+
+.bouton:hover {
+  color: var(--color-bg);
+  transform: translateY(-2px) rotate(-1.5deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bouton {
+    transition: none;
+  }
+  .bouton:hover {
+    transform: none;
+  }
+}
+
+.prose {
+  max-width: var(--measure);
+}
+
+.prose > * + * {
+  margin-top: var(--space-s);
+}
+
+.prose h2 {
+  margin-top: var(--space-l);
+  font-size: var(--fs-h3);
+  line-height: 1.1;
+}
+
+.prose strong {
+  color: var(--color-pink);
+  font-weight: 500;
+}
+
+/* Apparitions au scroll : CSS pur, contenu visible si non supporté ou mouvement réduit */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .revele {
+      animation: apparition linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 25%;
+    }
+  }
+}
+
+@keyframes apparition {
+  from {
+    opacity: 0;
+    transform: translateY(2rem) rotateX(14deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
