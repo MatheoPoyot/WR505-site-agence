@@ -1,0 +1,107 @@
+---
+import MenuMobile from './islands/MenuMobile.vue';
+
+const liens = [
+  { href: '/projets/', label: 'Projets' },
+  { href: '/studio/', label: 'Studio' },
+  { href: '/contact/', label: 'Contact' },
+];
+const chemin = Astro.url.pathname;
+const sansBarre = (p: string) => p.replace(/\/+$/, '') || '/';
+const estActif = (href: string) => {
+  const c = sansBarre(chemin);
+  const h = sansBarre(href);
+  return c === h || c.startsWith(h + '/');
+};
+---
+
+<header class="entete">
+  <div class="conteneur entete__barre">
+    <a href="/" class="logo">
+      <svg class="logo__marque" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <polygon points="4,28 16,4 16,20" fill="#7B5CFF"></polygon>
+        <polygon points="16,4 28,28 16,20" fill="#FF5FA2"></polygon>
+        <polygon points="4,28 16,20 28,28" fill="#D4FF3A"></polygon>
+      </svg>
+      <span>Origami Digital</span>
+    </a>
+    <nav class="nav-bureau" aria-label="Navigation principale">
+      <ul>
+        {
+          liens.map((lien) => (
+            <li>
+              <a href={lien.href} aria-current={estActif(lien.href) ? 'page' : undefined}>
+                {lien.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <MenuMobile client:idle liens={liens} chemin={chemin} />
+  </div>
+</header>
+
+<style>
+  .entete {
+    position: relative;
+    z-index: 10;
+  }
+
+  .entete__barre {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: var(--space-m);
+  }
+
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    color: var(--color-text);
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .logo__marque {
+    width: 1.75rem;
+    height: 1.75rem;
+    transition: transform var(--duree) var(--ease-pli);
+  }
+
+  .logo:hover .logo__marque {
+    transform: rotate(-12deg) scale(1.1);
+  }
+
+  .nav-bureau ul {
+    list-style: none;
+    display: flex;
+    gap: var(--space-l);
+  }
+
+  .nav-bureau a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+
+  .nav-bureau a:hover,
+  .nav-bureau a[aria-current='page'] {
+    color: var(--color-text);
+  }
+
+  .nav-bureau a[aria-current='page'] {
+    text-decoration: underline;
+    text-decoration-color: var(--color-pink);
+    text-decoration-thickness: 2px;
+  }
+
+  @media (max-width: 47.99rem) {
+    .nav-bureau {
+      display: none;
+    }
+  }
+</style>

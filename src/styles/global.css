@@ -161,3 +161,48 @@ a:hover {
     transform: none;
   }
 }
+
+/* Transition de page « pli » : l'ancienne page se replie en diagonale, la nouvelle se déplie */
+@keyframes pli-replie {
+  from {
+    transform-origin: 0 0;
+  }
+  to {
+    transform-origin: 0 0;
+    transform: perspective(1400px) rotate3d(1, -1, 0, 75deg) scale(0.9);
+    opacity: 0;
+  }
+}
+
+@keyframes pli-deplie {
+  from {
+    transform-origin: 100% 100%;
+    transform: perspective(1400px) rotate3d(1, -1, 0, -75deg) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform-origin: 100% 100%;
+  }
+}
+
+@keyframes pli-replie-retour {
+  from {
+    transform-origin: 100% 100%;
+  }
+  to {
+    transform-origin: 100% 100%;
+    transform: perspective(1400px) rotate3d(1, -1, 0, -75deg) scale(0.9);
+    opacity: 0;
+  }
+}
+
+@keyframes pli-deplie-retour {
+  from {
+    transform-origin: 0 0;
+    transform: perspective(1400px) rotate3d(1, -1, 0, 75deg) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform-origin: 0 0;
+  }
+}
