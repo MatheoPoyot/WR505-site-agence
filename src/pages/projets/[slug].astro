@@ -1,5 +1,5 @@
 ---
-import type { GetStaticPaths } from 'astro';
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
 import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Pli from '../../components/generatif/Pli.astro';
@@ -12,6 +12,8 @@ export const getStaticPaths = (async () => {
     props: { projet, suivant: projetSuivant(projets, projet.id) },
   }));
 }) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { projet, suivant } = Astro.props;
 const { title, client, year, disciplines, summary, seed, palette } = projet.data;

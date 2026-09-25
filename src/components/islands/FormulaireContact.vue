@@ -208,7 +208,7 @@ async function envoyer(evenement: Event) {
   display: grid;
   gap: var(--space-xs);
   padding: var(--space-l);
-  border: 1px solid var(--color-lime);
+  border: 1px solid var(--color-violet);
   border-radius: var(--radius);
 }
 

@@ -61,3 +61,15 @@ Format : date, décision, alternatives écartées, raison.
 - **Décision** : `FeuilleHero.vue` rend chaque facette comme un calque découpé par `clip-path` et animé par `rotate3d`, à partir de la même géométrie que `Pli.astro` (`pli.ts`). Le repli en grue suit le scroll (section de deux écrans, scène collante). Le rendu serveur de l'îlot sert d'état statique (avant hydratation et sous mouvement réduit), au lieu d'un SVG `Pli.astro` séparé.
 - **Alternatives écartées** : facettes en SVG (pas de vraie rotation 3D) ; WebGL.
 - **Raison** : effet 3D réel sans dépendance, un seul rendu à maintenir.
+
+## 2026-09-25 — Visuels génératifs au build
+
+- **Décision** : les visuels des projets, de l'équipe et de la 404 sont générés en SVG au build par `Pli.astro` à partir d'une graine (seed).
+- **Alternatives écartées** : photos libres de droits, maquettes d'écrans codées à la main, rendu Canvas côté client.
+- **Raison** : cohérence avec le concept du pli, zéro image à produire, zéro JavaScript.
+
+## 2026-09-25 — Menu mobile et transitions
+
+- **Décision** : le menu mobile suit un motif « disclosure » (bouton + panneau qui apparaît/disparaît) avec `inert` posé sur le contenu et le pied de page pendant l'ouverture, plutôt qu'un `role="dialog"`. Sous `prefers-reduced-motion`, le changement de page est instantané (Astro coupe les animations de transition) au lieu du fondu prévu par la spec.
+- **Alternatives écartées** : `role="dialog"` avec gestion de focus modale complète ; conserver un fondu réduit en transition de page sous mouvement réduit.
+- **Raison** : le panneau plein écran n'a pas besoin de la sémantique modale complète d'une boîte de dialogue ; couper entièrement l'animation de transition est l'interprétation la plus sûre de « aucune animation de transformation » sous mouvement réduit.

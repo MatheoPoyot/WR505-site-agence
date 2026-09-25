@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onBeforeUnmount, ref, watch } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 interface Lien {
   href: string;
@@ -13,10 +13,13 @@ const bouton = ref<HTMLButtonElement | null>(null);
 const panneau = ref<HTMLElement | null>(null);
 
 const sansBarre = (p: string) => p.replace(/\/+$/, '') || '/';
-const estActif = (href: string) => {
+// 'page' sur la page exacte, 'true' sur une page enfant (ex. /projets/kori/ pour le lien /projets/)
+const etatActif = (href: string): 'page' | 'true' | undefined => {
   const c = sansBarre(props.chemin);
   const h = sansBarre(href);
-  return c === h || c.startsWith(h + '/');
+  if (c === h) return 'page';
+  if (c.startsWith(h + '/')) return 'true';
+  return undefined;
 };
 
 function focusables(): HTMLElement[] {
@@ -73,11 +76,22 @@ watch(ouvert, (estOuvert) => {
   }
 });
 
+// Passage en affichage bureau (≥ 48rem) : la nav-bureau reprend la main, on ferme le panneau mobile
+let mediaBureau: MediaQueryList | null = null;
+function surChangementMedia(e: MediaQueryListEvent) {
+  if (e.matches) fermer(false);
+}
+onMounted(() => {
+  mediaBureau = window.matchMedia('(min-width: 48rem)');
+  mediaBureau.addEventListener('change', surChangementMedia);
+});
+
 // Navigation par View Transitions : l'îlot est démonté, on libère toujours le défilement
 onBeforeUnmount(() => {
   document.documentElement.style.overflow = '';
   isolerFond(false);
   document.removeEventListener('keydown', surTouche);
+  mediaBureau?.removeEventListener('change', surChangementMedia);
 });
 </script>
 
@@ -97,7 +111,7 @@ onBeforeUnmount(() => {
       <nav aria-label="Navigation principale">
         <ul>
           <li v-for="lien in liens" :key="lien.href">
-            <a :href="lien.href" :aria-current="estActif(lien.href) ? 'page' : undefined" @click="fermer(false)">
+            <a :href="lien.href" :aria-current="etatActif(lien.href)" @click="fermer(false)">
               {{ lien.label }}
             </a>
           </li>
@@ -157,7 +171,8 @@ onBeforeUnmount(() => {
   text-decoration: none;
 }
 
-.menu-mobile__panneau a[aria-current='page'] {
+.menu-mobile__panneau a[aria-current='page'],
+.menu-mobile__panneau a[aria-current='true'] {
   color: var(--color-pink);
 }
 </style>

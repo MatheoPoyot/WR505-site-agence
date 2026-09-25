@@ -107,7 +107,8 @@ a:hover {
   transition: transform var(--duree) var(--ease-pli);
 }
 
-.bouton:hover {
+.bouton:hover,
+.bouton:focus-visible {
   color: var(--color-bg);
   transform: translateY(-2px) rotate(-1.5deg);
 }
@@ -116,7 +117,8 @@ a:hover {
   .bouton {
     transition: none;
   }
-  .bouton:hover {
+  .bouton:hover,
+  .bouton:focus-visible {
     transform: none;
   }
 }

@@ -11,6 +11,7 @@ const props = defineProps<{ options: Option[]; cible: string; total: number }>()
 const monte = ref(false);
 const actif = ref<string | null>(null);
 const visibles = ref(props.total);
+const interagi = ref(false);
 
 function appliquer() {
   const grille = document.getElementById(props.cible);
@@ -30,6 +31,11 @@ onMounted(() => {
   appliquer();
 });
 
+function definirFiltre(valeur: string | null) {
+  interagi.value = true;
+  actif.value = valeur;
+}
+
 const annonce = computed(() =>
   visibles.value === 0
     ? 'Aucun projet pour ce filtre.'
@@ -39,18 +45,18 @@ const annonce = computed(() =>
 
 <template>
   <div v-if="monte" class="filtre" role="group" aria-label="Filtrer les projets par discipline">
-    <button type="button" :aria-pressed="actif === null" @click="actif = null">Tous</button>
+    <button type="button" :aria-pressed="actif === null" @click="definirFiltre(null)">Tous</button>
     <button
       v-for="option in options"
       :key="option.valeur"
       type="button"
       :aria-pressed="actif === option.valeur"
-      @click="actif = actif === option.valeur ? null : option.valeur"
+      @click="definirFiltre(actif === option.valeur ? null : option.valeur)"
     >
       {{ option.libelle }}
     </button>
   </div>
-  <p class="visually-hidden" aria-live="polite">{{ monte ? annonce : '' }}</p>
+  <p class="visually-hidden" aria-live="polite">{{ interagi ? annonce : '' }}</p>
 </template>
 
 <style scoped>
