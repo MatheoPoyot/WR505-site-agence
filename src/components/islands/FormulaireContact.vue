@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, reactive, ref } from 'vue';
+import { nextTick, onMounted, reactive, ref } from 'vue';
 
 type Champ = 'nom' | 'email' | 'message';
 type Etat = 'repos' | 'envoi' | 'succes' | 'erreur';
@@ -18,6 +18,11 @@ const erreurs = reactive<Record<Champ, string>>({ nom: '', email: '', message: '
 const etat = ref<Etat>('repos');
 const formulaire = ref<HTMLFormElement | null>(null);
 const confirmation = ref<HTMLElement | null>(null);
+const monte = ref(false);
+
+onMounted(() => {
+  monte.value = true;
+});
 
 function valider(): boolean {
   const email = valeurs.email.trim();
@@ -67,7 +72,7 @@ async function envoyer(evenement: Event) {
     action="/contact/merci/"
     data-netlify="true"
     netlify-honeypot="bot-field"
-    novalidate
+    :novalidate="monte"
     class="formulaire"
     @submit="envoyer"
   >
