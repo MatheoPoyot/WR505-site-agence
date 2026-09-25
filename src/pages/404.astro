@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Pli from '../components/generatif/Pli.astro';
+---
+
+<BaseLayout title="Page introuvable" description="Cette page s'est froissée. Retour à l'accueil d'Origami Digital." noindex>
+  <section class="conteneur perdu">
+    <div class="perdu__boule">
+      <Pli seed={404} palette={['#7B5CFF', '#FF5FA2', '#2A2840']} format="feuille" />
+    </div>
+    <div class="perdu__texte">
+      <p class="perdu__code" aria-hidden="true">404</p>
+      <h1>Cette page s'est <span class="exergue">froissée.</span></h1>
+      <p class="chapo">Le lien est peut-être ancien, ou la page a été repliée ailleurs.</p>
+      <p><a class="bouton" href="/">Retour à l'accueil →</a></p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .perdu {
+    display: grid;
+    gap: var(--space-l);
+    align-items: center;
+    padding-block: var(--space-xl);
+  }
+
+  @media (min-width: 48rem) {
+    .perdu {
+      grid-template-columns: 1fr 1.4fr;
+    }
+  }
+
+  /* Une feuille froissée : découpée en polygone irrégulier et tordue */
+  .perdu__boule {
+    width: min(70%, 22rem);
+    aspect-ratio: 1;
+    justify-self: center;
+    clip-path: polygon(18% 4%, 62% 0, 96% 22%, 100% 64%, 78% 96%, 34% 100%, 4% 78%, 0 30%);
+    transform: rotate(-14deg) skew(6deg, -4deg);
+  }
+
+  .perdu__texte {
+    display: grid;
+    gap: var(--space-m);
+    justify-items: start;
+  }
+
+  .perdu__code {
+    color: var(--color-lime);
+    font-family: var(--font-display);
+    font-size: var(--fs-h2);
+    line-height: 1;
+  }
+
+  .perdu__texte h1 {
+    font-size: var(--fs-h1);
+  }
+</style>
