@@ -77,6 +77,16 @@ const estActif = (href: string) => {
     transform: rotate(-12deg) scale(1.1);
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .logo__marque {
+      transition: none;
+    }
+
+    .logo:hover .logo__marque {
+      transform: none;
+    }
+  }
+
   .nav-bureau ul {
     list-style: none;
     display: flex;

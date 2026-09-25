@@ -48,8 +48,23 @@ function surTouche(e: KeyboardEvent) {
   }
 }
 
+// Isole le contenu sous le panneau plein écran des lecteurs d'écran en mode navigation
+function isolerFond(actif: boolean) {
+  const contenu = document.getElementById('contenu');
+  const pied = document.querySelector('footer');
+  for (const el of [contenu, pied]) {
+    if (!el) continue;
+    if (actif) {
+      el.setAttribute('inert', '');
+    } else {
+      el.removeAttribute('inert');
+    }
+  }
+}
+
 watch(ouvert, (estOuvert) => {
   document.documentElement.style.overflow = estOuvert ? 'hidden' : '';
+  isolerFond(estOuvert);
   if (estOuvert) {
     document.addEventListener('keydown', surTouche);
     nextTick(() => focusables()[0]?.focus());
@@ -61,6 +76,7 @@ watch(ouvert, (estOuvert) => {
 // Navigation par View Transitions : l'îlot est démonté, on libère toujours le défilement
 onBeforeUnmount(() => {
   document.documentElement.style.overflow = '';
+  isolerFond(false);
   document.removeEventListener('keydown', surTouche);
 });
 </script>
