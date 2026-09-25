@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onBeforeUnmount, ref, watch } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 interface Lien {
   href: string;
@@ -73,11 +73,21 @@ watch(ouvert, (estOuvert) => {
   }
 });
 
+// Passage en affichage bureau (≥ 48rem) : la nav-bureau reprend la main, on ferme le panneau mobile
+const mediaBureau = window.matchMedia('(min-width: 48rem)');
+function surChangementMedia(e: MediaQueryListEvent) {
+  if (e.matches) fermer(false);
+}
+onMounted(() => {
+  mediaBureau.addEventListener('change', surChangementMedia);
+});
+
 // Navigation par View Transitions : l'îlot est démonté, on libère toujours le défilement
 onBeforeUnmount(() => {
   document.documentElement.style.overflow = '';
   isolerFond(false);
   document.removeEventListener('keydown', surTouche);
+  mediaBureau.removeEventListener('change', surChangementMedia);
 });
 </script>
 
