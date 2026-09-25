@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://origami-digital.netlify.app/sitemap-index.xml

@@ -31,3 +31,15 @@ Format : date, décision, alternatives écartées, raison.
 - **Décision** : conserver `"allowScripts": { "esbuild": true }`, hérité du template officiel `create-astro`.
 - **Alternatives écartées** : le retirer.
 - **Raison** : rester aligné sur le template Astro. Le champ est sans effet avec npm 11.6.2 (non reconnu) ; il ne change rien à l'installation.
+
+## 2026-09-25 — Direction « Néon plié » et approche web native
+
+- **Décision** : identité sombre « Néon plié » (Unbounded + Inter, violet/rose/lime/cyan sur encre nuit). Effets en CSS 3D, SVG et API navigateur, sans WebGL ni bibliothèque d'animation.
+- **Alternatives écartées** : directions « Papier & encre » et « Kami couleur » ; Three.js/OGL ; moteur Canvas 2D côté client.
+- **Raison** : identité mémorable demandée ; poids minimal et approche cohérente avec la JAMstack. Voir `docs/superpowers/specs/2026-09-25-origami-digital-design.md`.
+
+## 2026-09-25 — Polices auto-hébergées et sitemap
+
+- **Décision** : polices via l'API `fonts` intégrée d'Astro (fournisseur Google, fichiers téléchargés au build et servis par le site) ; ajout de `@astrojs/sitemap` avec `site` = `https://origami-digital.netlify.app`.
+- **Alternatives écartées** : lien direct vers Google Fonts (requête tierce, flash de police) ; paquets `@fontsource` (dépendances) ; sitemap écrit à la main.
+- **Raison** : performance et vie privée sans dépendance pour les polices ; sitemap maintenu automatiquement pour une dépendance légère et officielle.
