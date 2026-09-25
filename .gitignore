@@ -1,0 +1,36 @@
+# Dépendances
+node_modules/
+
+# Build et caches Astro
+dist/
+.astro/
+
+# Netlify
+.netlify/
+
+# Variables d'environnement (seul .env.example est versionné)
+.env
+.env.*
+!.env.example
+
+# Claude Code (worktrees des agents, réglages locaux)
+.claude/worktrees/
+.claude/settings.local.json
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
