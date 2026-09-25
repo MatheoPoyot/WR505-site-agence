@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FormulaireContact from '../../components/islands/FormulaireContact.vue';
+---
+
+<BaseLayout
+  title="Contact"
+  description="Un projet de site, d'identité ou d'interface ? Écrivez à Origami Digital, réponse sous 48 heures."
+>
+  <section class="conteneur contact">
+    <div class="contact__intro">
+      <h1>Parlons <span class="exergue">pli</span></h1>
+      <p class="chapo">Racontez-nous votre projet, même s'il tient en trois lignes. On vous répond sous 48 heures.</p>
+      <dl class="contact__coordonnees">
+        <div><dt>E-mail</dt><dd><a href="mailto:bonjour@origami-digital.example">bonjour@origami-digital.example</a></dd></div>
+        <div><dt>Atelier</dt><dd>12 rue des Plieurs, 69001 Lyon</dd></div>
+      </dl>
+    </div>
+    <FormulaireContact client:visible />
+  </section>
+</BaseLayout>
+
+<style>
+  .contact {
+    display: grid;
+    gap: var(--space-l);
+    padding-block: var(--space-l);
+  }
+
+  @media (min-width: 64rem) {
+    .contact {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+  }
+
+  .contact__intro {
+    display: grid;
+    gap: var(--space-m);
+  }
+
+  .contact__intro h1 {
+    font-size: var(--fs-hero);
+  }
+
+  .contact__coordonnees {
+    display: grid;
+    gap: var(--space-s);
+    margin: 0;
+  }
+
+  .contact__coordonnees dt {
+    color: var(--color-text-muted);
+    font-size: var(--fs-small);
+  }
+
+  .contact__coordonnees dd {
+    margin: 0;
+  }
+</style>

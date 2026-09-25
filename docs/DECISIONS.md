@@ -49,3 +49,9 @@ Format : date, décision, alternatives écartées, raison.
 - **Décision** : l'îlot `FiltreProjets.vue` masque/affiche les cartes rendues par Astro (attribut `data-disciplines`) au lieu de rendre lui-même la grille ; il est hydraté en `client:idle` et n'affiche ses boutons qu'une fois monté.
 - **Alternatives écartées** : rendre toute la grille en Vue (impossible de réutiliser les SVG générés au build par `Pli.astro`) ; `client:visible` (un îlot vide avant montage n'a pas de surface à observer).
 - **Raison** : visuels 100 % statiques, et page complète sans JavaScript.
+
+## 2026-09-25 — Formulaire de contact avec Netlify Forms
+
+- **Décision** : formulaire HTML rendu au build (îlot Vue `FormulaireContact`), détecté par Netlify grâce à `data-netlify="true"`, protégé par un champ piège ; envoi en `fetch` quand JavaScript est disponible, envoi classique vers `/contact/merci/` sinon. Adresse de contact fictive en `.example` (domaine réservé, aucun courriel égaré).
+- **Alternatives écartées** : service tiers (Formspree), fonction serverless.
+- **Raison** : aucun backend ni dépendance ; reste une JAMstack pure. Limite : l'envoi ne fonctionne que sur un déploiement Netlify, pas en `npm run dev`.
