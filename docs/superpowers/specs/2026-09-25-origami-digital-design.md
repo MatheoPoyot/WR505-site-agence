@@ -1,6 +1,6 @@
 # Origami Digital — spécification de conception
 
-Date : 2026-09-25 · Statut : validée section par section, en relecture
+Date : 2026-09-25 · Statut : validée
 
 ## 1. Intention
 
@@ -132,7 +132,7 @@ Tokens dans `src/styles/tokens.css` :
 
 ### SEO et partage
 - Titre et description uniques par page, balises OpenGraph, `robots.txt`.
-- `sitemap.xml` via `@astrojs/sitemap` : **seule nouvelle dépendance**, à consigner dans `docs/DECISIONS.md`. Nécessite `site` dans `astro.config.mjs` = URL de production Netlify du site.
+- `sitemap.xml` via `@astrojs/sitemap` : **seule nouvelle dépendance**, à consigner dans `docs/DECISIONS.md`. Nécessite `site` dans `astro.config.mjs` = `https://origami-digital.netlify.app`.
 
 ## 8. Validation (sans tests automatisés, choix du projet)
 
