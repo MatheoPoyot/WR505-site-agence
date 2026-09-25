@@ -43,3 +43,9 @@ Format : date, décision, alternatives écartées, raison.
 - **Décision** : polices via l'API `fonts` intégrée d'Astro (fournisseur Google, fichiers téléchargés au build et servis par le site) ; ajout de `@astrojs/sitemap` avec `site` = `https://origami-digital.netlify.app`.
 - **Alternatives écartées** : lien direct vers Google Fonts (requête tierce, flash de police) ; paquets `@fontsource` (dépendances) ; sitemap écrit à la main.
 - **Raison** : performance et vie privée sans dépendance pour les polices ; sitemap maintenu automatiquement pour une dépendance légère et officielle.
+
+## 2026-09-25 — Formulaire de contact avec Netlify Forms
+
+- **Décision** : formulaire HTML rendu au build (îlot Vue `FormulaireContact`), détecté par Netlify grâce à `data-netlify="true"`, protégé par un champ piège ; envoi en `fetch` quand JavaScript est disponible, envoi classique vers `/contact/merci/` sinon. Adresse de contact fictive en `.example` (domaine réservé, aucun courriel égaré).
+- **Alternatives écartées** : service tiers (Formspree), fonction serverless.
+- **Raison** : aucun backend ni dépendance ; reste une JAMstack pure. Limite : l'envoi ne fonctionne que sur un déploiement Netlify, pas en `npm run dev`.

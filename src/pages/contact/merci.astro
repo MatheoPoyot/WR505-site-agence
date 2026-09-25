@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Merci" description="Votre message a bien été envoyé à Origami Digital." noindex>
+  <section class="conteneur merci">
+    <h1>Message <span class="exergue">bien reçu.</span></h1>
+    <p class="chapo">On le déplie avec attention et on vous répond sous 48 heures.</p>
+    <p><a class="bouton" href="/projets/">Voir nos projets en attendant →</a></p>
+  </section>
+</BaseLayout>
+
+<style>
+  .merci {
+    display: grid;
+    gap: var(--space-m);
+    justify-items: start;
+    padding-block: var(--space-xl);
+  }
+
+  .merci h1 {
+    font-size: var(--fs-h1);
+  }
+</style>
