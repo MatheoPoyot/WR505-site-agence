@@ -55,3 +55,9 @@ Format : date, décision, alternatives écartées, raison.
 - **Décision** : formulaire HTML rendu au build (îlot Vue `FormulaireContact`), détecté par Netlify grâce à `data-netlify="true"`, protégé par un champ piège ; envoi en `fetch` quand JavaScript est disponible, envoi classique vers `/contact/merci/` sinon. Adresse de contact fictive en `.example` (domaine réservé, aucun courriel égaré).
 - **Alternatives écartées** : service tiers (Formspree), fonction serverless.
 - **Raison** : aucun backend ni dépendance ; reste une JAMstack pure. Limite : l'envoi ne fonctionne que sur un déploiement Netlify, pas en `npm run dev`.
+
+## 2026-09-25 — Feuille hero en calques CSS 3D
+
+- **Décision** : `FeuilleHero.vue` rend chaque facette comme un calque découpé par `clip-path` et animé par `rotate3d`, à partir de la même géométrie que `Pli.astro` (`pli.ts`). Le repli en grue suit le scroll (section de deux écrans, scène collante). Le rendu serveur de l'îlot sert d'état statique (avant hydratation et sous mouvement réduit), au lieu d'un SVG `Pli.astro` séparé.
+- **Alternatives écartées** : facettes en SVG (pas de vraie rotation 3D) ; WebGL.
+- **Raison** : effet 3D réel sans dépendance, un seul rendu à maintenir.
