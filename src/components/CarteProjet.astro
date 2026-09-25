@@ -1,0 +1,98 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Pli from './generatif/Pli.astro';
+import { LIBELLES_DISCIPLINES } from '../lib/contenu';
+
+interface Props {
+  projet: CollectionEntry<'projets'>;
+  niveau?: 'h2' | 'h3';
+}
+
+const { projet, niveau = 'h3' } = Astro.props;
+const { title, client, year, disciplines, seed, palette } = projet.data;
+const Titre = niveau;
+---
+
+<article class="carte-projet" style={`--pli-couleur: ${palette[1]}`}>
+  <a href={`/projets/${projet.id}/`} class="carte-projet__lien">
+    <div class="carte-projet__visuel" transition:name={`visuel-${projet.id}`}>
+      <Pli seed={seed} palette={palette} format="vignette" />
+    </div>
+    <div class="carte-projet__texte">
+      <Titre class="carte-projet__titre">{title}</Titre>
+      <p class="carte-projet__meta">{client} · {year}</p>
+      <ul class="carte-projet__disciplines" aria-label="Disciplines">
+        {disciplines.map((d) => <li>{LIBELLES_DISCIPLINES[d]}</li>)}
+      </ul>
+    </div>
+  </a>
+</article>
+
+<style>
+  .carte-projet__lien {
+    display: grid;
+    gap: var(--space-s);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .carte-projet__visuel {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius);
+  }
+
+  /* Coin qui se replie au survol et révèle la couleur suivante de la palette */
+  .carte-projet__visuel::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    aspect-ratio: 1;
+    background: linear-gradient(225deg, var(--color-bg) 50%, var(--pli-couleur) 50%);
+    box-shadow: -6px 6px 14px rgb(0 0 0 / 0.35);
+    transition: width var(--duree) var(--ease-pli);
+  }
+
+  .carte-projet__lien:hover .carte-projet__visuel::after,
+  .carte-projet__lien:focus-visible .carte-projet__visuel::after {
+    width: 22%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .carte-projet__visuel::after {
+      transition: none;
+    }
+  }
+
+  .carte-projet__titre {
+    font-size: var(--fs-h3);
+    line-height: 1.05;
+  }
+
+  .carte-projet__lien:hover .carte-projet__titre {
+    color: var(--color-pink);
+  }
+
+  .carte-projet__meta {
+    color: var(--color-text-muted);
+    font-size: var(--fs-small);
+  }
+
+  .carte-projet__disciplines {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
+  .carte-projet__disciplines li {
+    padding: 0.15em 0.7em;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    color: var(--color-text-muted);
+    font-size: var(--fs-small);
+  }
+</style>
