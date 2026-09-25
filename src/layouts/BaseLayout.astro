@@ -17,6 +17,17 @@ interface Props {
 const { title, description, noindex = false } = Astro.props;
 const titreComplet = title === 'Origami Digital' ? 'Origami Digital · Studio web expérimental' : `${title} · Origami Digital`;
 const canonique = new URL(Astro.url.pathname, Astro.site);
+
+// Sans JavaScript, le bouton du menu mobile est inerte : on affiche plutôt la nav bureau.
+// Rendu via set:html pour échapper à la portée (data-astro-cid-*) des styles de Header.astro ;
+// !important compense la spécificité ajoutée par cet attribut de portée.
+const styleSansJS = `<style>
+  @media (max-width: 47.99rem) {
+    .nav-bureau { display: block !important; }
+    .nav-bureau ul { flex-wrap: wrap !important; gap: var(--space-xs) !important; }
+    .menu-mobile { display: none !important; }
+  }
+</style>`;
 ---
 
 <!doctype html>
@@ -41,6 +52,7 @@ const canonique = new URL(Astro.url.pathname, Astro.site);
     <meta name="generator" content={Astro.generator} />
     <Font cssVariable="--font-display" preload />
     <Font cssVariable="--font-body" preload />
+    <noscript set:html={styleSansJS} />
     <ClientRouter />
   </head>
   <body>
