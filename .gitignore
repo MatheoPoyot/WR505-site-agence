@@ -34,3 +34,6 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Superpowers (maquettes de brainstorming, suivi local)
+.superpowers/
