@@ -1,0 +1,33 @@
+---
+interface Props {
+  titre: string;
+  texte: string;
+  href: string;
+  libelle: string;
+}
+
+const { titre, texte, href, libelle } = Astro.props;
+---
+
+<section class="appel conteneur revele">
+  <h2>{titre}</h2>
+  <p class="chapo">{texte}</p>
+  <a class="bouton" href={href}>{libelle} →</a>
+</section>
+
+<style>
+  .appel {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-m);
+    margin-top: var(--space-xl);
+    padding: var(--space-l) var(--space-m);
+    border: 1px solid var(--color-violet);
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, rgb(123 92 255 / 0.18), transparent 60%), var(--color-surface);
+  }
+
+  .appel h2 {
+    font-size: var(--fs-h2);
+  }
+</style>

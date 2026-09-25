@@ -1,0 +1,63 @@
+---
+const etapes = [
+  { titre: "Déplier", texte: "On écoute, on questionne, on ouvre tout : vos objectifs, votre public, vos contraintes." },
+  { titre: "Marquer les plis", texte: "On trace la stratégie et le concept : ce qui compte, ce qu'on laisse de côté." },
+  { titre: "Plier", texte: "Design et développement avancent ensemble, avec vous, par étapes courtes et visibles." },
+  { titre: "Faire voler", texte: "Mise en ligne, mesures, ajustements : on reste là après le lancement." },
+];
+---
+
+<ol class="methode" role="list">
+  {
+    etapes.map((etape, i) => (
+      <li class="methode__etape revele" style={`--i: ${i}`}>
+        <span class="methode__numero" aria-hidden="true">{i + 1}</span>
+        <h3>{etape.titre}</h3>
+        <p>{etape.texte}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .methode {
+    list-style: none;
+    display: grid;
+    gap: var(--space-m);
+  }
+
+  @media (min-width: 48rem) {
+    .methode {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    /* Escalier : chaque étape descend un peu plus, comme une feuille qu'on plie */
+    .methode__etape {
+      margin-top: calc(var(--i) * var(--space-m));
+    }
+  }
+
+  .methode__etape {
+    display: grid;
+    gap: var(--space-xs);
+    padding: var(--space-m);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .methode__numero {
+    color: var(--color-lime);
+    font-family: var(--font-display);
+    font-size: var(--fs-h2);
+    line-height: 1;
+  }
+
+  .methode__etape h3 {
+    font-size: var(--fs-h3);
+  }
+
+  .methode__etape p {
+    color: var(--color-text-muted);
+  }
+</style>

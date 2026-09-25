@@ -1,0 +1,49 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Pli from './generatif/Pli.astro';
+import { PALETTE_EQUIPE } from '../lib/contenu';
+
+interface Props {
+  membre: CollectionEntry<'equipe'>;
+}
+
+const { membre } = Astro.props;
+const { name, role, bio, seed } = membre.data;
+---
+
+<article class="membre revele">
+  <div class="membre__portrait" role="img" aria-label={`Portrait génératif de ${name}`}>
+    <Pli seed={seed} palette={PALETTE_EQUIPE} format="avatar" />
+  </div>
+  <h3 class="membre__nom">{name}</h3>
+  <p class="membre__role">{role}</p>
+  <p class="membre__bio">{bio}</p>
+</article>
+
+<style>
+  .membre {
+    display: grid;
+    gap: var(--space-xs);
+  }
+
+  .membre__portrait {
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 50% 50% 50% var(--radius);
+    margin-bottom: var(--space-xs);
+  }
+
+  .membre__nom {
+    font-size: var(--fs-h3);
+    line-height: 1.1;
+  }
+
+  .membre__role {
+    color: var(--color-pink);
+    font-size: var(--fs-small);
+  }
+
+  .membre__bio {
+    color: var(--color-text-muted);
+  }
+</style>
