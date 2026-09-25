@@ -1,0 +1,19 @@
+<a class="lien-evitement" href="#contenu">Aller au contenu</a>
+
+<style>
+  .lien-evitement {
+    position: absolute;
+    top: var(--space-xs);
+    left: var(--space-xs);
+    z-index: 100;
+    padding: 0.6em 1em;
+    background: var(--color-lime);
+    color: var(--color-bg);
+    font-weight: 500;
+    transform: translateY(-200%);
+  }
+
+  .lien-evitement:focus {
+    transform: none;
+  }
+</style>
