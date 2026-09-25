@@ -43,3 +43,9 @@ Format : date, décision, alternatives écartées, raison.
 - **Décision** : polices via l'API `fonts` intégrée d'Astro (fournisseur Google, fichiers téléchargés au build et servis par le site) ; ajout de `@astrojs/sitemap` avec `site` = `https://origami-digital.netlify.app`.
 - **Alternatives écartées** : lien direct vers Google Fonts (requête tierce, flash de police) ; paquets `@fontsource` (dépendances) ; sitemap écrit à la main.
 - **Raison** : performance et vie privée sans dépendance pour les polices ; sitemap maintenu automatiquement pour une dépendance légère et officielle.
+
+## 2026-09-25 — Filtre des projets appliqué sur le HTML statique
+
+- **Décision** : l'îlot `FiltreProjets.vue` masque/affiche les cartes rendues par Astro (attribut `data-disciplines`) au lieu de rendre lui-même la grille ; il est hydraté en `client:idle` et n'affiche ses boutons qu'une fois monté.
+- **Alternatives écartées** : rendre toute la grille en Vue (impossible de réutiliser les SVG générés au build par `Pli.astro`) ; `client:visible` (un îlot vide avant montage n'a pas de surface à observer).
+- **Raison** : visuels 100 % statiques, et page complète sans JavaScript.
