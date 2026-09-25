@@ -1,0 +1,87 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  services: CollectionEntry<'services'>[];
+  /** Titres seuls (aperçu de la page d'accueil). */
+  compact?: boolean;
+}
+
+const { services, compact = false } = Astro.props;
+---
+
+<ol class:list={['services', { 'services--compact': compact }]} role="list">
+  {
+    services.map((service, i) => (
+      <li class="service revele">
+        <span class="service__numero" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+        <h3 class="service__titre">{service.data.title}</h3>
+        {!compact && (
+          <>
+            <p class="service__description">{service.data.description}</p>
+            <ul class="service__livrables" aria-label={`Livrables : ${service.data.title}`}>
+              {service.data.deliverables.map((l) => <li>{l}</li>)}
+            </ul>
+          </>
+        )}
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .services {
+    list-style: none;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .service {
+    display: grid;
+    gap: var(--space-xs) var(--space-m);
+    padding-block: var(--space-m);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  @media (min-width: 48rem) {
+    .service {
+      grid-template-columns: 4rem 1fr 1fr;
+      align-items: baseline;
+    }
+
+    .service__livrables {
+      grid-column: 3;
+    }
+  }
+
+  .service__numero {
+    color: var(--color-pink);
+    font-family: var(--font-display);
+  }
+
+  .service__titre {
+    font-size: var(--fs-h3);
+    line-height: 1.1;
+  }
+
+  .service__description {
+    color: var(--color-text-muted);
+  }
+
+  .service__livrables {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
+  .service__livrables li {
+    padding: 0.15em 0.7em;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    font-size: var(--fs-small);
+  }
+
+  .services--compact .service {
+    grid-template-columns: 4rem 1fr;
+  }
+</style>

@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ListeServices from '../components/ListeServices.astro';
+import Methode from '../components/Methode.astro';
+import CarteMembre from '../components/CarteMembre.astro';
+import Appel from '../components/Appel.astro';
+import { equipeTriee, servicesTries } from '../lib/contenu';
+
+const services = await servicesTries();
+const equipe = await equipeTriee();
+---
+
+<BaseLayout
+  title="Studio"
+  description="Origami Digital est un studio web expérimental à Lyon : quatre personnes, quatre métiers, une obsession pour le pli."
+>
+  <section class="conteneur manifeste">
+    <h1>Un studio qui <span class="exergue">plie</span> les règles</h1>
+    <div class="manifeste__texte">
+      <p class="chapo">
+        Une feuille blanche ne dit rien. Pliée, elle devient une grue, un avion, une idée qui tient debout. Nous
+        faisons la même chose avec le web.
+      </p>
+      <p>
+        Origami Digital est un petit studio lyonnais. Nous concevons des sites, des identités et des interfaces
+        qui ne ressemblent qu'à celles et ceux qui nous les confient. Chaque pli est pensé : s'il ne sert à rien,
+        on ne le fait pas.
+      </p>
+    </div>
+  </section>
+
+  <section class="conteneur bloc" aria-labelledby="titre-services">
+    <h2 id="titre-services">Ce qu'on plie</h2>
+    <ListeServices services={services} />
+  </section>
+
+  <section class="conteneur bloc" aria-labelledby="titre-methode">
+    <h2 id="titre-methode">Comment on plie</h2>
+    <Methode />
+  </section>
+
+  <section class="conteneur bloc" aria-labelledby="titre-equipe">
+    <h2 id="titre-equipe">Qui plie</h2>
+    <div class="equipe">
+      {equipe.map((membre) => <CarteMembre membre={membre} />)}
+    </div>
+  </section>
+
+  <Appel
+    titre="Une idée à déplier ?"
+    texte="Racontez-nous votre projet : on vous répond sous 48 heures avec nos premières questions."
+    href="/contact/"
+    libelle="Parlons-en"
+  />
+</BaseLayout>
+
+<style>
+  .manifeste {
+    display: grid;
+    gap: var(--space-l);
+    padding-block: var(--space-l) var(--space-xl);
+  }
+
+  .manifeste h1 {
+    font-size: var(--fs-hero);
+  }
+
+  .manifeste__texte {
+    display: grid;
+    gap: var(--space-m);
+    max-width: var(--measure);
+  }
+
+  @media (min-width: 64rem) {
+    .manifeste__texte {
+      margin-left: auto;
+    }
+  }
+
+  .bloc {
+    display: grid;
+    gap: var(--space-l);
+    margin-top: var(--space-xl);
+  }
+
+  .bloc > h2 {
+    font-size: var(--fs-h2);
+  }
+
+  .equipe {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: var(--space-l) var(--space-m);
+  }
+</style>
