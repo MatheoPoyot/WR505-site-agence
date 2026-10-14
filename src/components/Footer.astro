@@ -1,0 +1,49 @@
+---
+const annee = new Date().getFullYear();
+---
+
+<footer class="pied">
+  <div class="conteneur pied__grille">
+    <p class="pied__signature">On plie le web <span class="exergue">à vos idées.</span></p>
+    <div>
+      <p><a href="mailto:bonjour@origami-digital.example">bonjour@origami-digital.example</a></p>
+      <p class="pied__adresse">12 rue des Plieurs, 69001 Lyon</p>
+    </div>
+    <p class="pied__mentions">© {annee} Origami Digital · Agence fictive, projet WR505</p>
+  </div>
+</footer>
+
+<style>
+  .pied {
+    margin-top: var(--space-xl);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .pied__grille {
+    display: grid;
+    gap: var(--space-m);
+    padding-block: var(--space-l);
+  }
+
+  @media (min-width: 48rem) {
+    .pied__grille {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+
+  .pied__signature {
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    line-height: 1.1;
+  }
+
+  .pied__adresse,
+  .pied__mentions {
+    color: var(--color-text-muted);
+    font-size: var(--fs-small);
+  }
+
+  .pied__mentions {
+    grid-column: 1 / -1;
+  }
+</style>

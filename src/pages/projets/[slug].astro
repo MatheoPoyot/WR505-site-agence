@@ -1,0 +1,129 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Pli from '../../components/generatif/Pli.astro';
+import { LIBELLES_DISCIPLINES, projetSuivant, projetsTries } from '../../lib/contenu';
+
+export const getStaticPaths = (async () => {
+  const projets = await projetsTries();
+  return projets.map((projet) => ({
+    params: { slug: projet.id },
+    props: { projet, suivant: projetSuivant(projets, projet.id) },
+  }));
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { projet, suivant } = Astro.props;
+const { title, client, year, disciplines, summary, seed, palette } = projet.data;
+const { Content } = await render(projet);
+---
+
+<BaseLayout title={title} description={summary}>
+  <article class="etude">
+    <header class="conteneur etude__entete">
+      <p class="etude__retour"><a href="/projets/">← Tous les projets</a></p>
+      <h1>{title}</h1>
+      <p class="chapo">{summary}</p>
+      <dl class="etude__infos">
+        <div><dt>Client</dt><dd>{client}</dd></div>
+        <div><dt>Année</dt><dd>{year}</dd></div>
+        <div><dt>Disciplines</dt><dd>{disciplines.map((d) => LIBELLES_DISCIPLINES[d]).join(', ')}</dd></div>
+      </dl>
+    </header>
+
+    <div class="etude__visuel" transition:name={`visuel-${projet.id}`}>
+      <Pli seed={seed} palette={palette} format="hero" />
+    </div>
+
+    <div class="conteneur etude__corps">
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
+  </article>
+
+  <nav class="conteneur suivant" aria-label="Projet suivant">
+    <a href={`/projets/${suivant.id}/`} class="suivant__lien">
+      <span class="suivant__label">Projet suivant</span>
+      <span class="suivant__titre">{suivant.data.title} →</span>
+    </a>
+  </nav>
+</BaseLayout>
+
+<style>
+  .etude__entete {
+    display: grid;
+    gap: var(--space-m);
+    padding-block: var(--space-l);
+  }
+
+  .etude__entete h1 {
+    font-size: var(--fs-hero);
+  }
+
+  .etude__retour a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+
+  .etude__infos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-m) var(--space-l);
+    margin: 0;
+  }
+
+  .etude__infos dt {
+    color: var(--color-text-muted);
+    font-size: var(--fs-small);
+  }
+
+  .etude__infos dd {
+    margin: 0;
+  }
+
+  .etude__visuel {
+    height: clamp(16rem, 45vw, 36rem);
+    overflow: hidden;
+  }
+
+  .etude__corps {
+    padding-block: var(--space-xl) 0;
+  }
+
+  @media (min-width: 64rem) {
+    .etude__corps .prose {
+      margin-left: 33%;
+    }
+  }
+
+  .suivant {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-l);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .suivant__lien {
+    display: grid;
+    gap: var(--space-xs);
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .suivant__label {
+    color: var(--color-text-muted);
+    font-size: var(--fs-small);
+  }
+
+  .suivant__titre {
+    font-family: var(--font-display);
+    font-size: var(--fs-h2);
+    line-height: 1;
+  }
+
+  .suivant__lien:hover .suivant__titre {
+    color: var(--color-pink);
+  }
+</style>

@@ -1,0 +1,75 @@
+# Décisions techniques
+
+Format : date, décision, alternatives écartées, raison.
+
+## 2026-09-25 — Astro + Vue
+
+- **Décision** : Astro 7 (rendu statique) avec l'intégration `@astrojs/vue` pour les îlots interactifs, TypeScript strict, npm.
+- **Alternatives écartées** : Nuxt (le template Netlify présent auparavant sur le dépôt), Astro seul.
+- **Raison** : consigne du cours WR505 (JAMstack Astro + Vue). Astro livre du HTML statique par défaut ; Vue n'est chargé que là où il y a de l'interactivité.
+
+## 2026-09-25 — Hébergement Netlify
+
+- **Décision** : déploiement sur Netlify. `netlify.toml` définit le build (`npm run build`, publication de `dist/`) ; `.nvmrc` est la source unique de la version de Node (22), lue en local et par Netlify.
+- **Alternatives écartées** : Vercel, GitHub Pages.
+- **Raison** : choix de l'équipe ; déploiement continu depuis GitHub et aperçus des pull requests par défaut (aperçus de branches activables dans l'interface Netlify).
+
+## 2026-09-25 — Pas de tests ni de lint/format
+
+- **Décision** : aucun outil de test, de lint ni de formatage.
+- **Alternatives écartées** : Vitest, Playwright, ESLint, Prettier.
+- **Raison** : choix explicite pour ce projet. La validation repose sur le build, la vérification visuelle dans le navigateur et la relecture croisée.
+
+## 2026-09-25 — Fins de ligne LF
+
+- **Décision** : `.gitattributes` impose LF dans le dépôt.
+- **Alternatives écartées** : laisser `core.autocrlf` propre à chaque poste.
+- **Raison** : dépôt partagé entre plusieurs collaborateurs et OS ; évite les diffs parasites.
+
+## 2026-09-25 — Champ `allowScripts` dans package.json
+
+- **Décision** : conserver `"allowScripts": { "esbuild": true }`, hérité du template officiel `create-astro`.
+- **Alternatives écartées** : le retirer.
+- **Raison** : rester aligné sur le template Astro. Le champ est sans effet avec npm 11.6.2 (non reconnu) ; il ne change rien à l'installation.
+
+## 2026-09-25 — Direction « Néon plié » et approche web native
+
+- **Décision** : identité sombre « Néon plié » (Unbounded + Inter, violet/rose/lime/cyan sur encre nuit). Effets en CSS 3D, SVG et API navigateur, sans WebGL ni bibliothèque d'animation.
+- **Alternatives écartées** : directions « Papier & encre » et « Kami couleur » ; Three.js/OGL ; moteur Canvas 2D côté client.
+- **Raison** : identité mémorable demandée ; poids minimal et approche cohérente avec la JAMstack. Voir `docs/superpowers/specs/2026-09-25-origami-digital-design.md`.
+
+## 2026-09-25 — Polices auto-hébergées et sitemap
+
+- **Décision** : polices via l'API `fonts` intégrée d'Astro (fournisseur Google, fichiers téléchargés au build et servis par le site) ; ajout de `@astrojs/sitemap` avec `site` = `https://origami-digital.netlify.app`.
+- **Alternatives écartées** : lien direct vers Google Fonts (requête tierce, flash de police) ; paquets `@fontsource` (dépendances) ; sitemap écrit à la main.
+- **Raison** : performance et vie privée sans dépendance pour les polices ; sitemap maintenu automatiquement pour une dépendance légère et officielle.
+
+## 2026-09-25 — Filtre des projets appliqué sur le HTML statique
+
+- **Décision** : l'îlot `FiltreProjets.vue` masque/affiche les cartes rendues par Astro (attribut `data-disciplines`) au lieu de rendre lui-même la grille ; il est hydraté en `client:idle` et n'affiche ses boutons qu'une fois monté.
+- **Alternatives écartées** : rendre toute la grille en Vue (impossible de réutiliser les SVG générés au build par `Pli.astro`) ; `client:visible` (un îlot vide avant montage n'a pas de surface à observer).
+- **Raison** : visuels 100 % statiques, et page complète sans JavaScript.
+
+## 2026-09-25 — Formulaire de contact avec Netlify Forms
+
+- **Décision** : formulaire HTML rendu au build (îlot Vue `FormulaireContact`), détecté par Netlify grâce à `data-netlify="true"`, protégé par un champ piège ; envoi en `fetch` quand JavaScript est disponible, envoi classique vers `/contact/merci/` sinon. Adresse de contact fictive en `.example` (domaine réservé, aucun courriel égaré).
+- **Alternatives écartées** : service tiers (Formspree), fonction serverless.
+- **Raison** : aucun backend ni dépendance ; reste une JAMstack pure. Limite : l'envoi ne fonctionne que sur un déploiement Netlify, pas en `npm run dev`.
+
+## 2026-09-25 — Feuille hero en calques CSS 3D
+
+- **Décision** : `FeuilleHero.vue` rend chaque facette comme un calque découpé par `clip-path` et animé par `rotate3d`, à partir de la même géométrie que `Pli.astro` (`pli.ts`). Le repli en grue suit le scroll (section de deux écrans, scène collante). Le rendu serveur de l'îlot sert d'état statique (avant hydratation et sous mouvement réduit), au lieu d'un SVG `Pli.astro` séparé.
+- **Alternatives écartées** : facettes en SVG (pas de vraie rotation 3D) ; WebGL.
+- **Raison** : effet 3D réel sans dépendance, un seul rendu à maintenir.
+
+## 2026-09-25 — Visuels génératifs au build
+
+- **Décision** : les visuels des projets, de l'équipe et de la 404 sont générés en SVG au build par `Pli.astro` à partir d'une graine (seed).
+- **Alternatives écartées** : photos libres de droits, maquettes d'écrans codées à la main, rendu Canvas côté client.
+- **Raison** : cohérence avec le concept du pli, zéro image à produire, zéro JavaScript.
+
+## 2026-09-25 — Menu mobile et transitions
+
+- **Décision** : le menu mobile suit un motif « disclosure » (bouton + panneau qui apparaît/disparaît) avec `inert` posé sur le contenu et le pied de page pendant l'ouverture, plutôt qu'un `role="dialog"`. Sous `prefers-reduced-motion`, le changement de page est instantané (Astro coupe les animations de transition) au lieu du fondu prévu par la spec.
+- **Alternatives écartées** : `role="dialog"` avec gestion de focus modale complète ; conserver un fondu réduit en transition de page sous mouvement réduit.
+- **Raison** : le panneau plein écran n'a pas besoin de la sémantique modale complète d'une boîte de dialogue ; couper entièrement l'animation de transition est l'interprétation la plus sûre de « aucune animation de transformation » sous mouvement réduit.

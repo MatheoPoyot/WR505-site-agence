@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CarteProjet from '../../components/CarteProjet.astro';
+import FiltreProjets from '../../components/islands/FiltreProjets.vue';
+import { LIBELLES_DISCIPLINES, projetsTries, type Discipline } from '../../lib/contenu';
+
+const projets = await projetsTries();
+const presentes = new Set(projets.flatMap((p) => p.data.disciplines));
+const options = (Object.keys(LIBELLES_DISCIPLINES) as Discipline[])
+  .filter((d) => presentes.has(d))
+  .map((d) => ({ valeur: d, libelle: LIBELLES_DISCIPLINES[d] }));
+---
+
+<BaseLayout
+  title="Projets"
+  description="Sites, identités, interfaces et expériences : six projets pliés sur mesure par Origami Digital."
+>
+  <section class="conteneur entete-page">
+    <h1>Projets <span class="exergue">pliés</span> sur mesure</h1>
+    <p class="chapo">Festivals, artisans, coopératives, applis de village : chaque projet a sa forme, et chaque forme a sa raison.</p>
+    <FiltreProjets client:idle options={options} cible="grille-projets" total={projets.length} />
+  </section>
+
+  <ul id="grille-projets" class="conteneur grille-projets" role="list">
+    {
+      projets.map((projet) => (
+        <li class="revele" data-disciplines={projet.data.disciplines.join(' ')}>
+          <CarteProjet projet={projet} niveau="h2" />
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>
+
+<style>
+  .entete-page {
+    display: grid;
+    gap: var(--space-m);
+    padding-block: var(--space-l);
+  }
+
+  .entete-page h1 {
+    font-size: var(--fs-h1);
+  }
+
+  .grille-projets {
+    list-style: none;
+    display: grid;
+    gap: var(--space-l) var(--space-m);
+  }
+
+  @media (min-width: 48rem) {
+    .grille-projets {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Grille asymétrique : la colonne de droite est décalée vers le bas ;
+       :not([hidden]) pour que le décalage reste juste quand le filtre masque des cartes */
+    .grille-projets > li:nth-child(even of :not([hidden])) {
+      margin-top: var(--space-xl);
+    }
+  }
+
+  .grille-projets > li[hidden] {
+    display: none;
+  }
+</style>

@@ -1,0 +1,165 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FeuilleHero from '../components/islands/FeuilleHero.vue';
+import CarteProjet from '../components/CarteProjet.astro';
+import ListeServices from '../components/ListeServices.astro';
+import Appel from '../components/Appel.astro';
+import { projetsTries, servicesTries } from '../lib/contenu';
+
+const projets = (await projetsTries()).filter((p) => p.data.featured).slice(0, 3);
+const services = await servicesTries();
+---
+
+<BaseLayout
+  title="Origami Digital"
+  description="Studio web expérimental : sites, identités et interfaces qui se déplient au fil du regard."
+>
+  <section class="hero" data-hero>
+    <div class="hero__scene conteneur">
+      <div class="hero__texte">
+        <h1>On plie le web <span class="exergue">à vos idées.</span></h1>
+        <p class="chapo">Studio expérimental. Sites, identités et interfaces qui se déplient au fil du regard.</p>
+        <p><a class="bouton" href="/projets/">Voir les projets →</a></p>
+      </div>
+      <div class="hero__feuille">
+        <FeuilleHero client:visible seed={2026} palette={['#7B5CFF', '#FF5FA2', '#35E0FF', '#1C1A2E']} />
+      </div>
+    </div>
+  </section>
+
+  <section class="conteneur manifeste revele" aria-label="Manifeste">
+    <p>
+      Une feuille blanche ne dit rien. <span class="exergue">Pliée</span>, elle devient une grue, un avion, une idée
+      qui tient debout. C'est ce qu'on fait avec le web.
+    </p>
+  </section>
+
+  <section class="conteneur bloc" aria-labelledby="titre-une">
+    <div class="bloc__entete">
+      <h2 id="titre-une">À la une</h2>
+      <a href="/projets/">Tous les projets →</a>
+    </div>
+    <ul class="une" role="list">
+      {projets.map((projet) => <li class="revele"><CarteProjet projet={projet} /></li>)}
+    </ul>
+  </section>
+
+  <section class="conteneur bloc" aria-labelledby="titre-studio">
+    <div class="bloc__entete">
+      <h2 id="titre-studio">Le studio</h2>
+      <a href="/studio/">Découvrir le studio →</a>
+    </div>
+    <ListeServices services={services} compact />
+  </section>
+
+  <Appel
+    titre="Une idée à déplier ?"
+    texte="Racontez-nous votre projet : on vous répond sous 48 heures avec nos premières questions."
+    href="/contact/"
+    libelle="Parlons-en"
+  />
+</BaseLayout>
+
+<style>
+  /* Sans JS (ou sous mouvement réduit), l'îlot ne pose jamais data-hero-actif :
+     pas de second écran vide à faire défiler, la scène n'a pas besoin d'être collée */
+  .hero {
+    height: auto;
+  }
+
+  /* Avec JS : la section fait deux écrans, la scène reste collée pendant que la feuille se replie en grue */
+  .hero[data-hero-actif] {
+    height: 200svh;
+  }
+
+  .hero__scene {
+    position: static;
+    top: 0;
+    display: grid;
+    align-items: center;
+    min-height: 100svh;
+    gap: var(--space-l);
+  }
+
+  .hero[data-hero-actif] .hero__scene {
+    position: sticky;
+  }
+
+  @media (min-width: 64rem) {
+    .hero__scene {
+      grid-template-columns: 3fr 2fr;
+    }
+  }
+
+  .hero__texte {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: var(--space-m);
+  }
+
+  .hero__texte h1 {
+    font-size: var(--fs-hero);
+  }
+
+  .hero__feuille {
+    width: min(100%, 36rem);
+    justify-self: center;
+  }
+
+  @media (max-width: 63.99rem) {
+    .hero__feuille {
+      grid-row: 1;
+      width: min(60%, 16rem);
+    }
+  }
+
+  .manifeste p {
+    max-width: 22ch;
+    font-family: var(--font-display);
+    font-size: var(--fs-h2);
+    line-height: 1.05;
+  }
+
+  .bloc {
+    display: grid;
+    gap: var(--space-l);
+    margin-top: var(--space-xl);
+  }
+
+  .bloc__entete {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-s);
+  }
+
+  .bloc__entete h2 {
+    font-size: var(--fs-h2);
+  }
+
+  .une {
+    list-style: none;
+    display: grid;
+    gap: var(--space-l) var(--space-m);
+  }
+
+  @media (min-width: 48rem) {
+    .une {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .une > li:nth-child(2) {
+      margin-top: var(--space-l);
+    }
+
+    .une > li:nth-child(3) {
+      margin-top: calc(2 * var(--space-l));
+    }
+  }
+
+  .manifeste {
+    margin-top: var(--space-xl);
+  }
+</style>
